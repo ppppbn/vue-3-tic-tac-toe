@@ -1,26 +1,34 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <div class="page-wrapper" v-if="hasPlayers">
+      <Navbar />
+      <router-view />
+    </div>
+    <Players v-else />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { defineComponent, computed } from 'vue';
+import store from '@/store';
+import Navbar from '@/components/atoms/Navbar';
+import Players from '@/components/molecules/Players';
 
-export default {
-  name: 'App',
+export default defineComponent({
+  name: 'TicTacVue',
   components: {
-    HelloWorld
+    Navbar,
+    Players,
+  },
+  setup() {
+    const hasPlayers = computed(() => store.getters['hasPlayers']);
+    return {
+      hasPlayers
+    };
   }
-}
+});
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+@import 'src/scss/app.scss';
 </style>
